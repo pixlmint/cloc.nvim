@@ -16,6 +16,7 @@ function M.set_status(status)
 	vim.schedule(function()
 		vim.api.nvim_exec_autocmds("User", {
 			pattern = "ClocStatusUpdated",
+			data = status,
 		})
 	end)
 end
