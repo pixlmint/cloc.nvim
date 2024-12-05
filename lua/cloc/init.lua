@@ -12,15 +12,19 @@ local M = {}
 ---@param project ClocProjectConfig
 local function init(dir, project)
 	local cloc = Cloc.new(dir, config.options.program, project.include)
+	local callback = function()
+		status.set_status({ data = {}, statusCode = "loading" })
+		cloc:execute(function(data)
+			status.set_status({ data = data, statusCode = "ready" })
+		end)
+	end
+
 	vim.api.nvim_create_autocmd(config.options.autocmds, {
 		group = cloc_group,
-		callback = function()
-			status.set_status({ data = {}, statusCode = "loading" })
-			cloc:execute(function(data)
-				status.set_status({ data = data, statusCode = "ready" })
-			end)
-		end,
+		callback = callback,
 	})
+
+	callback()
 end
 
 local function try_init(event)
