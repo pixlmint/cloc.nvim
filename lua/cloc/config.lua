@@ -1,12 +1,22 @@
+---@class ClocProjectConfig
+---@field pattern string
+---@field include string[]
+
 ---@class ClocConfig
----@field cmd string
----@field cwd string|function
+---@field program string
+---@field projects ClocProjectConfig[]
 ---@field autocmds string[]
 
 ---@type ClocConfig
 local default = {
-	cmd = "gocloc",
-	cwd = ".", -- string or function, returns the working dir
+	program = "gocloc",
+	projects = {
+		-- order matters, the more specific should be first
+		{
+			pattern = "pubspec.yaml",
+			include = { "lib" },
+		},
+	},
 	autocmds = { "BufWritePost", "BufEnter" }, -- or nil, nil indicates no autocmd will be set
 }
 

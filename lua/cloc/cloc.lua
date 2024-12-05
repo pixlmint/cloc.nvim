@@ -46,8 +46,8 @@ function M.execute(callback)
 		end
 	end
 	local cmd = {
-		config.options.cmd,
-		config.options.cwd,
+		config.options.program,
+		".",
 	}
 	vim.system(cmd, { text = true }, on_exit)
 end
