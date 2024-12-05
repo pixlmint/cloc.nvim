@@ -14,6 +14,7 @@ M.data = {}
 
 ---@param data string
 local function processData(data)
+	M.data = {}
 	local lines = vim.split(data, "\n")
 	for i, value in ipairs(lines) do
 		if i > 3 and i < #lines - 3 then
