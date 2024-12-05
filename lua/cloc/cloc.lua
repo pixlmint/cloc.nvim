@@ -1,5 +1,3 @@
-local config = require("cloc.config")
-
 M = {}
 
 ---@class LangData
@@ -9,13 +7,46 @@ M = {}
 ---@field comment number
 ---@field code number
 
----@type LangData[]
-M.data = {}
+---Initialize a new cloc instance
+---@param root_dir string
+---@param program string
+---@param include string[]
+---@return table
+function M.new(root_dir, program, include)
+	local obj = {
+		result = {},
+		root_dir = root_dir,
+		program = program,
+		include = include,
+	}
+	return setmetatable(obj, { __index = M })
+end
 
----@param data string
-local function processData(data)
-	M.data = {}
-	local lines = vim.split(data, "\n")
+---@return table
+function M:get_cmd()
+	local cmd = { self.program }
+	for _, value in ipairs(self.include) do
+		table.insert(cmd, value)
+	end
+	return cmd
+end
+
+function M:execute(callback)
+	local function on_exit(result)
+		if result.code == 0 then
+			self:processData(result.stdout)
+			if callback then
+				callback(self.result)
+			end
+		end
+	end
+	local cmd = self:get_cmd()
+	vim.system(cmd, { text = true, cwd = self.root_dir }, on_exit)
+end
+
+function M:processData(result)
+	self.result = {}
+	local lines = vim.split(result, "\n")
 	for i, value in ipairs(lines) do
 		if i > 3 and i < #lines - 3 then
 			local langline = vim.split(value, "%s+", { trimempty = true })
@@ -24,32 +55,15 @@ local function processData(data)
 			local blank = tonumber(langline[3])
 			local comment = tonumber(langline[4])
 			local code = tonumber(langline[5])
-			M.data[#M.data + 1] = {
+			table.insert(self.result, {
 				lang = lang,
 				files = files or -1,
 				blank = blank or -1,
 				comment = comment or -1,
 				code = code or -1,
-			}
+			})
 		end
 	end
-end
-
----@param callback function
-function M.execute(callback)
-	local function on_exit(result)
-		if result.code == 0 then
-			processData(result.stdout)
-			if callback then
-				callback(M.data)
-			end
-		end
-	end
-	local cmd = {
-		config.options.program,
-		".",
-	}
-	vim.system(cmd, { text = true }, on_exit)
 end
 
 return M

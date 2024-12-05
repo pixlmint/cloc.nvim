@@ -1,25 +1,25 @@
 local config = require("cloc.config")
-local cloc = require("cloc.cloc")
+local Cloc = require("cloc.cloc")
 
 local status = require("cloc.status")
 
-local M = {}
+local cloc_group = vim.api.nvim_create_augroup("cloc", { clear = true })
 
-local function update()
-	status.set_status({ data = {}, statusCode = "loading" })
-	cloc.execute(function(data)
-		status.set_status({ data = data, statusCode = "ready" })
-	end)
-end
+local M = {}
 
 ---initialize a cloc instance and set autocmds
 ---@param dir any
----@param project any
+---@param project ClocProjectConfig
 local function init(dir, project)
-	local group = vim.api.nvim_create_augroup("cloc", { clear = true })
+	local cloc = Cloc.new(dir, config.options.program, project.include)
 	vim.api.nvim_create_autocmd(config.options.autocmds, {
-		group = group,
-		callback = update,
+		group = cloc_group,
+		callback = function()
+			status.set_status({ data = {}, statusCode = "loading" })
+			cloc:execute(function(data)
+				status.set_status({ data = data, statusCode = "ready" })
+			end)
+		end,
 	})
 end
 
@@ -38,10 +38,9 @@ end
 function M.setup(opts)
 	config.setup(opts)
 
-	local group = vim.api.nvim_create_augroup("cloc ", { clear = true })
 	vim.api.nvim_create_autocmd("DirChanged", {
 		pattern = "global",
-		group = group,
+		group = cloc_group,
 		callback = try_init,
 	})
 
