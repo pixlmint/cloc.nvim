@@ -22,6 +22,11 @@ local default = {
 			pattern = ".git",
 			include = { "." },
 		},
+		-- project declared by .project file
+		{
+			pattern = ".project",
+			include = { "." },
+		},
 	},
 	autocmds = { "BufWritePost" }, -- or nil, nil indicates no autocmd will be set
 }
