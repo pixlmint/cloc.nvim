@@ -4,7 +4,9 @@ local cloc = require("cloc.cloc")
 local M = {}
 
 local function update()
-	cloc.execute()
+	cloc.execute(function()
+		-- update
+	end)
 end
 
 function M.setup(opts)

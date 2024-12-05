@@ -34,10 +34,14 @@ local function processData(data)
 	end
 end
 
-function M.execute()
+---@param callback function
+function M.execute(callback)
 	local function on_exit(result)
 		if result.code == 0 then
 			processData(result.stdout)
+			if callback then
+				callback(M.data)
+			end
 		end
 	end
 	local cmd = {
