@@ -10,14 +10,20 @@
 ---@type ClocConfig
 local default = {
 	program = "gocloc",
+	-- order matters, the more specific should be first
 	projects = {
-		-- order matters, the more specific should be first
+		-- flutter project
 		{
 			pattern = "pubspec.yaml",
 			include = { "lib" },
 		},
+		-- project managed by git
+		{
+			pattern = ".git",
+			include = { "." },
+		},
 	},
-	autocmds = { "BufWritePost", "BufEnter" }, -- or nil, nil indicates no autocmd will be set
+	autocmds = { "BufWritePost" }, -- or nil, nil indicates no autocmd will be set
 }
 
 local M = {}
