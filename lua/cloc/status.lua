@@ -13,6 +13,11 @@ M.status = {
 ---@param status ClocStatus
 function M.set_status(status)
 	M.status = status
+	vim.schedule(function()
+		vim.api.nvim_exec_autocmds("User", {
+			pattern = "ClocStatusUpdated",
+		})
+	end)
 end
 
 ---@return ClocStatus
