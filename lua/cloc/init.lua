@@ -39,7 +39,11 @@ local function update()
 			processData(result.stdout)
 		end
 	end
-	vim.system({ "gocloc", "." }, { text = true }, on_exit)
+	local cmd = {
+		config.options.cmd,
+		config.options.cwd,
+	}
+	vim.system(cmd, { text = true }, on_exit)
 end
 
 function M.setup(opts)
