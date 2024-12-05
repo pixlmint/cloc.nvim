@@ -1,13 +1,13 @@
 ---@class ClocConfig
 ---@field cmd string
 ---@field cwd string|function
----@field autocmd string|nil
+---@field autocmds string[]
 
 ---@type ClocConfig
 local default = {
 	cmd = "gocloc",
 	cwd = ".", -- string or function, returns the working dir
-	autocmd = "BufWritePost", -- bufwritepost or nil, nil indicates no autocmd will be set
+	autocmds = { "BufWritePost", "BufEnter" }, -- or nil, nil indicates no autocmd will be set
 }
 
 local M = {}
