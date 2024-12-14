@@ -1,3 +1,4 @@
+local config = require("cloc.config")
 M = {}
 
 ---@class LangData
@@ -51,17 +52,32 @@ function M:processData(result)
 		if i > 3 and i < #lines - 3 then
 			local langline = vim.split(value, "%s+", { trimempty = true })
 			local lang = langline[1]
-			local files = tonumber(langline[2])
-			local blank = tonumber(langline[3])
-			local comment = tonumber(langline[4])
-			local code = tonumber(langline[5])
-			table.insert(self.result, {
-				lang = lang,
-				files = files or -1,
-				blank = blank or -1,
-				comment = comment or -1,
-				code = code or -1,
-			})
+			if config.options.program == "tokei" then
+				-- Files        Lines         Code     Comments       Blanks
+				local files = tonumber(langline[2])
+				local code = tonumber(langline[4])
+				local comment = tonumber(langline[5])
+				local blank = tonumber(langline[6])
+				table.insert(self.result, {
+					lang = lang,
+					files = files or -1,
+					blank = blank or -1,
+					comment = comment or -1,
+					code = code or -1,
+				})
+			else
+				local files = tonumber(langline[2])
+				local blank = tonumber(langline[3])
+				local comment = tonumber(langline[4])
+				local code = tonumber(langline[5])
+				table.insert(self.result, {
+					lang = lang,
+					files = files or -1,
+					blank = blank or -1,
+					comment = comment or -1,
+					code = code or -1,
+				})
+			end
 		end
 	end
 end
