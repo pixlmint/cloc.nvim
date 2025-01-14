@@ -12,12 +12,13 @@ M = {}
 ---@param program string
 ---@param include string[]
 ---@return table
-function M.new(root_dir, program, include)
+function M.new(root_dir, program, include, exclude_d)
 	local obj = {
 		result = {},
 		root_dir = root_dir,
 		program = program,
 		include = include,
+		exclude_d = exclude_d,
 	}
 	return setmetatable(obj, { __index = M })
 end
@@ -25,6 +26,10 @@ end
 ---@return table
 function M:get_cmd()
 	local cmd = { self.program }
+	for _, value in ipairs(self.exclude_d) do
+		table.insert(cmd, '--not-match-d')
+		table.insert(cmd, value)
+	end
 	for _, value in ipairs(self.include) do
 		table.insert(cmd, value)
 	end

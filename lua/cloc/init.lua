@@ -11,7 +11,7 @@ local M = {}
 ---@param dir any
 ---@param project ClocProjectConfig
 local function init(dir, project)
-	local cloc = Cloc.new(dir, config.options.program, project.include)
+	local cloc = Cloc.new(dir, config.options.program, project.include, config.options.exclude_d)
 	local callback = function()
 		status.set_status({ data = {}, statusCode = "loading" })
 		cloc:execute(function(data)

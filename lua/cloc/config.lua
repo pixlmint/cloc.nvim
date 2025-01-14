@@ -28,6 +28,9 @@ local default = {
 			include = { "." },
 		},
 	},
+	exclude_d = {
+		"venv", "node_modules", "vendor"
+	},
 	autocmds = { "BufWritePost" }, -- or nil, nil indicates no autocmd will be set
 }
 
