@@ -8,11 +8,11 @@ A Neovim plugin that counts how many lines of code a project contains and provid
 
 # ⚡️ Requiremenets
 - [neovim](https://neovim.io/)
-- [gocloc](https://github.com/hhatto/gocloc)(recommended more) or [cloc](https://github.com/AlDanial/cloc) 
+- [gocloc](https://github.com/hhatto/gocloc)(recommended more) or [cloc](https://github.com/AlDanial/cloc)  or [tokei](https://github.com/XAMPPRocky/tokei)
 # 📦 Installation
 You can download it manually or using a package manager(recommended).
 
-❗**Make sure you have installed any of cloc programs, [gocloc](https://github.com/hhatto/gocloc)(recommended) or [cloc](https://github.com/AlDanial/cloc)**
+❗**Make sure you have installed any of cloc programs, [gocloc](https://github.com/hhatto/gocloc)(recommended) or [cloc](https://github.com/AlDanial/cloc) or [tokei](https://github.com/XAMPPRocky/tokei) **
 
 ## [Lazy.nvim](https://github.com/folke/lazy.nvim)
 ```lua 
@@ -29,7 +29,7 @@ You can download it manually or using a package manager(recommended).
 {
     "gcanoxl/cloc.nvim",
     opts = {
-        program = "gocloc",
+        program = "gocloc", -- `gocloc` or `tokei` or `cloc`
         -- order matters, the more specific should be first
         projects = {
             -- flutter project

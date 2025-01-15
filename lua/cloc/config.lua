@@ -9,7 +9,7 @@
 
 ---@type ClocConfig
 local default = {
-	program = "gocloc",
+	program = "gocloc", -- `gocloc` or `tokei` or `cloc`
 	-- order matters, the more specific should be first
 	projects = {
 		-- flutter project
